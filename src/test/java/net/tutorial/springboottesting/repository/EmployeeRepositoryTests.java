@@ -1,6 +1,7 @@
 package net.tutorial.springboottesting.repository;
 
 import java.util.List;
+import java.util.Optional;
 import net.tutorial.springboottesting.model.Employee;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -123,6 +124,25 @@ public class EmployeeRepositoryTests {
     // then - verify the output
     assertThat(updatedEmployee.getEmail()).isEqualTo("mihail-cepraga@mail.com");
     assertThat(updatedEmployee.getFirstName()).isEqualTo("Mihail");
+  }
+
+  // JUnit test for delete employee operation
+  @DisplayName("JUnit test for delete employee operation")
+  @Test
+  public void givenEmployeeObject_whenDelete_thenRemoveEmployee() {
+    // given - precondition or setup
+    Employee employee1 = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mihail-cepraga1@mail.net")
+        .build();
+    employeeRepository.save(employee1);
+
+    // when - action or the behaviour that we are going test
+    employeeRepository.delete(employee1);
+    Optional<Employee> employeeOptional = employeeRepository.findById(employee1.getId());
+    // then - verify the output
+    assertThat(employeeOptional).isEmpty();
   }
 
 }
