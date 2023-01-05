@@ -62,23 +62,44 @@ public class EmployeeRepositoryTests {
     assertThat(employeeList.size()).isEqualTo(2);
 
   }
-    // JUnit test for get employee by id operation
-      @DisplayName("JUnit test for get employee by id operation")
-      @Test
-      public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
-        // given - precondition or setup
-        Employee employee1 = Employee.builder()
-            .firstName("Mihail1")
-            .lastName("Cepraga1")
-            .email("mihail-cepraga1@mail.net")
-            .build();
-        employeeRepository.save(employee1);
 
-        // when - action or the behaviour that we are going test
-        Employee employeeDB = employeeRepository.findById(employee1.getId()).get();
+  // JUnit test for get employee by id operation
+  @DisplayName("JUnit test for get employee by id operation")
+  @Test
+  public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
+    // given - precondition or setup
+    Employee employee1 = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mihail-cepraga1@mail.net")
+        .build();
+    employeeRepository.save(employee1);
 
-        // then - verify the output
-        assertThat(employeeDB).isNotNull();
-      }
+    // when - action or the behaviour that we are going test
+    Employee employeeDB = employeeRepository.findById(employee1.getId()).get();
+
+    // then - verify the output
+    assertThat(employeeDB).isNotNull();
+  }
+
+  // JUnit test for get employee by email operation
+  @Test
+  public void givenEmployeeEmail_whenFindByEmail_thenReturnEmployeeObject() {
+    // given - precondition or setup
+    Employee employee1 = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mihail-cepraga1@mail.net")
+        .build();
+    employeeRepository.save(employee1);
+
+    // when - action or the behaviour that we are going test
+    Employee employeeDB = employeeRepository.findByEmail(employee1.getEmail()).get();
+
+    // then - verify the output
+    assertThat(employeeDB).isNotNull();
+    assertThat(employeeDB.getEmail()).isEqualTo(employee1.getEmail());
+
+  }
 
 }
