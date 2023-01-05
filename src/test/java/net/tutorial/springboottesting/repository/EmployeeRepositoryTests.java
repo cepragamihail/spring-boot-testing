@@ -145,4 +145,26 @@ public class EmployeeRepositoryTests {
     assertThat(employeeOptional).isEmpty();
   }
 
+  // JUnit test for custom query using JPQL with index
+  @DisplayName("JUnit test for custom query using JPQL with index")
+  @Test
+  public void givenFirstNameAndLastName_whenFindByJPQL_thenReturnEmployeeObject() {
+    // given - precondition or setup
+    Employee employee1 = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mihail-cepraga1@mail.net")
+        .build();
+    employeeRepository.save(employee1);
+    String firstName = "Mihail1";
+    String lastName = "Cepraga1";
+
+    // when - action or the behaviour that we are going test
+    Employee savedEmployee = employeeRepository.findByJPQL(firstName,lastName);
+
+    // then - verify the output
+    assertThat(savedEmployee).isNotNull();
+    assertThat(savedEmployee.getFirstName()).isEqualTo(firstName);
+    assertThat(savedEmployee.getLastName()).isEqualTo(lastName);
+  }
 }
