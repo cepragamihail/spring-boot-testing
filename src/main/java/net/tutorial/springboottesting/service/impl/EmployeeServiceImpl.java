@@ -38,4 +38,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   public Optional<Employee> getEmployeeById(long id) {
     return employeeRepository.findById(id);
   }
+
+  @Override
+  public Employee updateEmployee(Employee updateEmployee) {
+    return employeeRepository.save(updateEmployee);
+  }
 }
