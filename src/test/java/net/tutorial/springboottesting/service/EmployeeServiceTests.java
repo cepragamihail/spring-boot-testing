@@ -1,5 +1,7 @@
 package net.tutorial.springboottesting.service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import net.tutorial.springboottesting.exception.ResourceNotFoundException;
@@ -72,7 +74,7 @@ public class EmployeeServiceTests {
   // JUnit test for getAllEmployees method
   @DisplayName("JUnit test for getAllEmployees method")
   @Test
-  public void givenEmployeeList_when_then() {
+  public void givenEmployeeList_whenGetAllEmployees_thenReturnEmployeesList() {
     // given - precondition or setup
     Employee employee1 = Employee.builder().id(1L).firstName("Mihail1").lastName("Cepraga1").email("mihail1@mail.com").build();
     given(employeeRepository.findAll()).willReturn(List.of(employee, employee1));
@@ -83,6 +85,21 @@ public class EmployeeServiceTests {
     // then - verify the output
     assertThat(employeeList).isNotNull();
     assertThat(employeeList.size()).isEqualTo(2);
+  }
+
+  // JUnit test for getAllEmployees method (negative scenario)
+  @DisplayName("JUnit test for getAllEmployees method (negative scenario)")
+  @Test
+  public void givenEmptyEmployeeList_whenGetAllEmployees_thenReturnEmptyEmployeesList() {
+    // given - precondition or setup
+    given(employeeRepository.findAll()).willReturn(Collections.EMPTY_LIST);
+
+    // when - action or the behaviour that we are going test
+    List<Employee> employeeList = employeeService.getAllEmployees();
+
+    // then - verify the output
+    assertThat(employeeList).isEmpty();
+    assertThat(employeeList.size()).isEqualTo(0);
   }
 
 }
