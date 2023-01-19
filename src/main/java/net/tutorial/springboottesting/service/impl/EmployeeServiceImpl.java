@@ -1,5 +1,6 @@
 package net.tutorial.springboottesting.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import net.tutorial.springboottesting.exception.ResourceNotFoundException;
 import net.tutorial.springboottesting.model.Employee;
@@ -26,5 +27,10 @@ public class EmployeeServiceImpl implements EmployeeService {
       throw new ResourceNotFoundException("Employee already exist with given email: " + employee.getEmail());
     }
     return employeeRepository.save(employee);
+  }
+
+  @Override
+  public List<Employee> getAllEmployees() {
+    return employeeRepository.findAll();
   }
 }

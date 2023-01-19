@@ -1,5 +1,6 @@
 package net.tutorial.springboottesting.service;
 
+import java.util.List;
 import java.util.Optional;
 import net.tutorial.springboottesting.exception.ResourceNotFoundException;
 import net.tutorial.springboottesting.model.Employee;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -47,8 +49,8 @@ public class EmployeeServiceTests {
     Employee saveEmployee = employeeService.saveEmployee(employee);
 
     // then - verify the output
-    Assertions.assertThat(saveEmployee).isNotNull();
-    Assertions.assertThat(saveEmployee.getId()).isEqualTo(employee.getId());
+    assertThat(saveEmployee).isNotNull();
+    assertThat(saveEmployee.getId()).isEqualTo(employee.getId());
   }
 
   // JUnit test for saveEmployee method which throws exception
@@ -67,5 +69,20 @@ public class EmployeeServiceTests {
     verify(employeeRepository, never()).save(any(Employee.class));
   }
 
+  // JUnit test for getAllEmployees method
+  @DisplayName("JUnit test for getAllEmployees method")
+  @Test
+  public void givenEmployeeList_when_then() {
+    // given - precondition or setup
+    Employee employee1 = Employee.builder().id(1L).firstName("Mihail1").lastName("Cepraga1").email("mihail1@mail.com").build();
+    given(employeeRepository.findAll()).willReturn(List.of(employee, employee1));
+
+    // when - action or the behaviour that we are going test
+    List<Employee> employeeList = employeeService.getAllEmployees();
+
+    // then - verify the output
+    assertThat(employeeList).isNotNull();
+    assertThat(employeeList.size()).isEqualTo(2);
+  }
 
 }
