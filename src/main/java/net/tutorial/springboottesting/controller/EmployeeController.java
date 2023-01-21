@@ -1,8 +1,10 @@
 package net.tutorial.springboottesting.controller;
 
+import java.util.List;
 import net.tutorial.springboottesting.model.Employee;
 import net.tutorial.springboottesting.service.EmployeeService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,11 @@ public class EmployeeController {
 
   public EmployeeController(EmployeeService employeeService) {
     this.employeeService = employeeService;
+  }
+
+  @GetMapping
+  public List<Employee> getAllEmployees() {
+    return employeeService.getAllEmployees();
   }
 
   @PostMapping
