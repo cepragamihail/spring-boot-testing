@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import net.tutorial.springboottesting.model.Employee;
 import net.tutorial.springboottesting.service.EmployeeService;
 import org.junit.jupiter.api.DisplayName;
@@ -81,6 +82,32 @@ class EmployeeControllerTest {
     resultResponse.andExpect(status().isOk())
         .andDo(print())
         .andExpect(jsonPath("$.size()", is(listOfEmployees.size())));
+  }
+
+  // positive scenario - void employee id
+  // JUnit test for GET employee by id REST API
+  @DisplayName("JUnit test for GET employee by id REST API positive scenario")
+  @Test
+  public void given_when_then() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    Employee employee = Employee.builder()
+        .firstName("Mihail")
+        .lastName("Cepraga")
+        .email("mcepraga@mail.com")
+        .build();
+    given(employeeService.getEmployeeById(employeeId))
+        .willReturn(Optional.of(employee));
+
+    // when - action or the behaviour that we are going test
+    ResultActions response = mockMvc.perform(get("/api/employees/{id}", employeeId));
+
+    // then - verify the output
+    response.andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
+        .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
+        .andExpect(jsonPath("$.email", is(employee.getEmail())));
   }
 
 }
