@@ -1,13 +1,16 @@
 package net.tutorial.springboottesting.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +134,39 @@ class EmployeeControllerTest {
     // then - verify the output
     response.andExpect(status().isNotFound())
         .andDo(print());
+  }
+
+  // JUnit test for update employee REST API - positive scenario
+  @DisplayName("JUnit test for update employee REST API - positive scenario")
+  @Test
+  public void givenUpdatedEmployee_whenUpdateEmployee_thenReturnEmployeeObject() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    Employee employee = Employee.builder()
+        .firstName("Mihail")
+        .lastName("Cepraga")
+        .email("mcepraga@mail.com")
+        .build();
+
+    Employee updatedEmployee = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mcepraga1@mail.com")
+        .build();
+    given(employeeService.getEmployeeById(employeeId)).willReturn(Optional.of(employee));
+    given(employeeService.updateEmployee(any(Employee.class))).willAnswer((invocation) -> invocation.getArgument(0));
+
+    // when - action or the behaviour that we are going test
+    ResultActions response = mockMvc.perform(put("/api/employees/{id}", employeeId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(updatedEmployee))
+    );
+    // then - verify the output
+    response.andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(jsonPath("$.firstName", is(updatedEmployee.getFirstName())))
+        .andExpect(jsonPath("$.lastName", is(updatedEmployee.getLastName())))
+        .andExpect(jsonPath("$.email", is(updatedEmployee.getEmail())));
   }
 
 }
