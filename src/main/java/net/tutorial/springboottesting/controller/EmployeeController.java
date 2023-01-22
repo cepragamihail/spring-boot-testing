@@ -5,6 +5,7 @@ import net.tutorial.springboottesting.model.Employee;
 import net.tutorial.springboottesting.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,5 +53,11 @@ public class EmployeeController {
   @ResponseStatus(HttpStatus.CREATED)
   public Employee createEmployee(@RequestBody Employee employee) {
     return employeeService.saveEmployee(employee);
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<String> deleteEmployee(@PathVariable("id") long employeeId) {
+    employeeService.deleteEmployeeById(employeeId);
+    return new ResponseEntity<>("Employee deleted successfully", HttpStatus.OK);
   }
 }
