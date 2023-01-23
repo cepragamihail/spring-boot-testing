@@ -113,4 +113,26 @@ public class EmployeeControllerITests {
         .andExpect(jsonPath("$.email", is(employee.getEmail())));
   }
 
+  // negative scenario - void employee id
+  // Integration test for GET employee by id REST API
+  @DisplayName("Integration test for GET employee by id REST API negative scenario")
+  @Test
+  public void givenEmployeeId_whenGetEmployeeId_thenReturnEmptyEmployeeObject() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    Employee employee = Employee.builder()
+        .firstName("Mihail")
+        .lastName("Cepraga")
+        .email("mcepraga@mail.com")
+        .build();
+    employeeRepository.save(employee);
+
+    // when - action or the behaviour that we are going test
+    ResultActions response = mockMvc.perform(get("/api/employees/{id}", employeeId));
+
+    // then - verify the output
+    response.andExpect(status().isNotFound())
+        .andDo(print());
+  }
+
 }
