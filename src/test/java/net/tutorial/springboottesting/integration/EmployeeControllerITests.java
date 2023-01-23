@@ -168,4 +168,32 @@ public class EmployeeControllerITests {
         .andExpect(jsonPath("$.email", is(updatedEmployee.getEmail())));
   }
 
+  // Integration test for update employee REST API - negative scenario
+  @DisplayName("Integration test for update employee REST API - negative scenario")
+  @Test
+  public void givenUpdatedEmployee_whenUpdateEmployee_thenReturnNOT_FOUND() throws Exception {
+    // given - precondition or setup
+    long employeeId = 1L;
+    Employee employee = Employee.builder()
+        .firstName("Mihail")
+        .lastName("Cepraga")
+        .email("mcepraga@mail.com")
+        .build();
+    employeeRepository.save(employee);
+    Employee updatedEmployee = Employee.builder()
+        .firstName("Mihail1")
+        .lastName("Cepraga1")
+        .email("mcepraga1@mail.com")
+        .build();
+
+    // when - action or the behaviour that we are going test
+    ResultActions response = mockMvc.perform(put("/api/employees/{id}", employeeId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(updatedEmployee))
+    );
+    // then - verify the output
+    response.andExpect(status().isNotFound())
+        .andDo(print());
+  }
+
 }
