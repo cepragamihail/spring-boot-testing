@@ -2,12 +2,15 @@ package net.tutorial.springboottesting.integration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
 import net.tutorial.springboottesting.model.Employee;
 import net.tutorial.springboottesting.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,11 +60,32 @@ public class EmployeeControllerITests {
     );
 
     // then - verify the result or output using assert statements
-    response.andDo(print())
-        .andExpect(status().isCreated())
+    response.andExpect(status().isCreated())
+        .andDo(print())
         .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
         .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
         .andExpect(jsonPath("$.email", is(employee.getEmail())));
+  }
+
+  // Integration test for getAllEmployees end point
+  @DisplayName("Integration test for getAllEmployees end point")
+  @Test
+  public void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception {
+    // given - precondition or setup
+    List<Employee> listOfEmployees = new ArrayList<>();
+    listOfEmployees.add(Employee.builder().firstName("Mihail0")
+        .lastName("Cepraga0").email("mcepraga0@mail.com").build());
+    listOfEmployees.add(Employee.builder().firstName("Mihail1")
+        .lastName("Cepraga1").email("mcepraga1@mail.com").build());
+    employeeRepository.saveAll(listOfEmployees);
+
+    // when - action or the behaviour that we are going test
+    ResultActions resultResponse = mockMvc.perform(get("/api/employees"));
+
+    // then - verify the output
+    resultResponse.andExpect(status().isOk())
+        .andDo(print())
+        .andExpect(jsonPath("$.size()", is(listOfEmployees.size())));
   }
 
 }
