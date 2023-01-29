@@ -22,28 +22,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Testcontainers
-class EmployeeControllerITestsContainer {
-
-  @Container
-  private static MySQLContainer mySQLContainer = new MySQLContainer<>();
-
-  @DynamicPropertySource
-  public static void dynamicPropertySource(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-    registry.add("spring.datasource.username", mySQLContainer::getUsername);
-    registry.add("spring.datasource.password", mySQLContainer::getPassword);
-  }
+class EmployeeControllerITestsContainer extends AbstractContainerBaseTest {
 
   @Autowired
   private MockMvc mockMvc;
