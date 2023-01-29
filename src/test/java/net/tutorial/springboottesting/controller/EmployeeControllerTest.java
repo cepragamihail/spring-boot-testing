@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ class EmployeeControllerTest {
   // JUnit test for createEmployee end point
   @DisplayName("JUnit test for createEmployee end point")
   @Test
-  public void givenEmployeeObject_whenCreateEmployee_thenReturnSavedEmployee() throws Exception {
+  void givenEmployeeObject_whenCreateEmployee_thenReturnSavedEmployee() throws Exception {
     // given - precondition or setup
     Employee employee = Employee.builder()
         .firstName("Mihail")
@@ -71,7 +70,7 @@ class EmployeeControllerTest {
   // JUnit test for getAllEmployees end point
   @DisplayName("JUnit test for getAllEmployees end point")
   @Test
-  public void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception {
+  void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception {
     // given - precondition or setup
     List<Employee> listOfEmployees = new ArrayList<>();
     listOfEmployees.add(Employee.builder().firstName("Mihail0")
@@ -93,7 +92,7 @@ class EmployeeControllerTest {
   // JUnit test for GET employee by id REST API
   @DisplayName("JUnit test for GET employee by id REST API positive scenario")
   @Test
-  public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() throws Exception {
+  void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() throws Exception {
     // given - precondition or setup
     long employeeId = 1L;
     Employee employee = Employee.builder()
@@ -119,14 +118,9 @@ class EmployeeControllerTest {
   // JUnit test for GET employee by id REST API
   @DisplayName("JUnit test for GET employee by id REST API negative scenario")
   @Test
-  public void givenEmployeeId_whenGetEmployeeId_thenReturnEmptyEmployeeObject() throws Exception {
+  void givenEmployeeId_whenGetEmployeeId_thenReturnEmptyEmployeeObject() throws Exception {
     // given - precondition or setup
     long employeeId = 1L;
-    Employee employee = Employee.builder()
-        .firstName("Mihail")
-        .lastName("Cepraga")
-        .email("mcepraga@mail.com")
-        .build();
     given(employeeService.getEmployeeById(employeeId))
         .willReturn(Optional.empty());
 
@@ -141,7 +135,7 @@ class EmployeeControllerTest {
   // JUnit test for update employee REST API - positive scenario
   @DisplayName("JUnit test for update employee REST API - positive scenario")
   @Test
-  public void givenUpdatedEmployee_whenUpdateEmployee_thenReturnEmployeeObject() throws Exception {
+  void givenUpdatedEmployee_whenUpdateEmployee_thenReturnEmployeeObject() throws Exception {
     // given - precondition or setup
     long employeeId = 1L;
     Employee employee = Employee.builder()
@@ -174,7 +168,7 @@ class EmployeeControllerTest {
   // JUnit test for update employee REST API - negative scenario
   @DisplayName("JUnit test for update employee REST API - negative scenario")
   @Test
-  public void givenUpdatedEmployee_whenUpdateEmployee_thenReturnNOT_FOUND() throws Exception {
+  void givenUpdatedEmployee_whenUpdateEmployee_thenReturnNOT_FOUND() throws Exception {
     // given - precondition or setup
     long employeeId = 1L;
     Employee updatedEmployee = Employee.builder()
@@ -198,7 +192,7 @@ class EmployeeControllerTest {
   // JUnit test for delete employee REST API
   @DisplayName("JUnit test for delete employee REST API")
   @Test
-  public void givenEmployeeId_whenDeleteEmployee_thenReturnOK() throws Exception {
+  void givenEmployeeId_whenDeleteEmployee_thenReturnOK() throws Exception {
     // given - precondition or setup
     long employeeId = 1L;
     willDoNothing().given(employeeService).deleteEmployeeById(employeeId);

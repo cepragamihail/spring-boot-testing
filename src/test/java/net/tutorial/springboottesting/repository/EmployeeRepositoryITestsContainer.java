@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import net.tutorial.springboottesting.integration.AbstractContainerBaseTest;
 import net.tutorial.springboottesting.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class EmployeeRepositoryITests {
+class EmployeeRepositoryITestsContainer extends AbstractContainerBaseTest {
 
   @Autowired
   private EmployeeRepository employeeRepository;
@@ -41,7 +42,7 @@ class EmployeeRepositoryITests {
 
     // then - verify the output
     assertThat(savedEmployee).isNotNull();
-    assertThat(savedEmployee.getId()).isZero();
+    assertThat(savedEmployee.getId()).isPositive();
   }
 
   // Integration test for get all employees operation

@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class EmployeeControllerITests {
+class EmployeeControllerITestsContainer extends AbstractContainerBaseTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -41,8 +41,8 @@ class EmployeeControllerITests {
     employeeRepository.deleteAll();
   }
 
-  // Integration test for createEmployee end point
-  @DisplayName("Integration test for createEmployee end point")
+  // Test container test for createEmployee end point
+  @DisplayName("Test container test for createEmployee end point")
   @Test
   void givenEmployeeObject_whenCreateEmployee_thenReturnSavedEmployee() throws Exception {
     // given - precondition or setup
@@ -67,8 +67,8 @@ class EmployeeControllerITests {
         .andExpect(jsonPath("$.email", is(employee.getEmail())));
   }
 
-  // Integration test for getAllEmployees end point
-  @DisplayName("Integration test for getAllEmployees end point")
+  // Test container test for getAllEmployees end point
+  @DisplayName("Test container test for getAllEmployees end point")
   @Test
   void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception {
     // given - precondition or setup
@@ -89,8 +89,8 @@ class EmployeeControllerITests {
   }
 
   // positive scenario - void employee id
-  // Integration test for GET employee by id REST API
-  @DisplayName("Integration test for GET employee by id REST API positive scenario")
+  // Test container test for GET employee by id REST API
+  @DisplayName("Test container test for GET employee by id REST API positive scenario")
   @Test
   void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() throws Exception {
     // given - precondition or setup
@@ -113,8 +113,8 @@ class EmployeeControllerITests {
   }
 
   // negative scenario - void employee id
-  // Integration test for GET employee by id REST API
-  @DisplayName("Integration test for GET employee by id REST API negative scenario")
+  // Test container test for GET employee by id REST API
+  @DisplayName("Test container test for GET employee by id REST API negative scenario")
   @Test
   void givenEmployeeId_whenGetEmployeeId_thenReturnEmptyEmployeeObject() throws Exception {
     // given - precondition or setup
@@ -133,8 +133,8 @@ class EmployeeControllerITests {
     response.andExpect(status().isNotFound())
         .andDo(print());
   }
-  // Integration test for update employee REST API - positive scenario
-  @DisplayName("Integration test for update employee REST API - positive scenario")
+  // Test container test for update employee REST API - positive scenario
+  @DisplayName("Test container test for update employee REST API - positive scenario")
   @Test
   void givenUpdatedEmployee_whenUpdateEmployee_thenReturnEmployeeObject() throws Exception {
     // given - precondition or setup
@@ -165,8 +165,8 @@ class EmployeeControllerITests {
         .andExpect(jsonPath("$.email", is(updatedEmployee.getEmail())));
   }
 
-  // Integration test for update employee REST API - negative scenario
-  @DisplayName("Integration test for update employee REST API - negative scenario")
+  // Test container test for update employee REST API - negative scenario
+  @DisplayName("Test container test for update employee REST API - negative scenario")
   @Test
   void givenUpdatedEmployee_whenUpdateEmployee_thenReturnNOT_FOUND() throws Exception {
     // given - precondition or setup
@@ -193,8 +193,8 @@ class EmployeeControllerITests {
         .andDo(print());
   }
 
-  // Integration test for delete employee REST API
-  @DisplayName("Integration test for delete employee REST API")
+  // Test container test for delete employee REST API
+  @DisplayName("Test container test for delete employee REST API")
   @Test
   void givenEmployeeId_whenDeleteEmployee_thenReturnOK() throws Exception {
     // given - precondition or setup
